@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Water Magics App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+
+<body style="font-family: Arial; margin:0;">
+
+<div id="app"></div>
+
+<script>
+let role = null;
+let screen = "dashboard";
+
+function render() {
+  const app = document.getElementById("app");
+
+  if (!role) {
+    app.innerHTML = `
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:linear-gradient(#0f172a,#1d4ed8,#22d3ee);color:white;">
+        <h1>WATER MAGICS PVT LTD 💧</h1>
+        <p>Select Role</p>
+        ${["Marketing","Execution","Customer","Dealer","Management"].map(r => 
+          `<button onclick="selectRole('${r}')" style="padding:10px;margin:5px;border-radius:8px;">${r}</button>`
+        ).join("")}
+      </div>
+    `;
+    return;
+  }
+
+  let roleButtons = "";
+
+  if (role === "Marketing") {
+    roleButtons = `
+      <button>Add Enquiry</button>
+      <button>Create Quotation</button>
+      <button>Follow Ups</button>
+      <button>Total Leads</button>
+      <button>Converted Deals</button>
+    `;
+  }
+
+  if (role === "Execution") {
+    roleButtons = `
+      <button onclick="setScreen('execution')">Accepted Projects</button>
+      <button>Material Stock</button>
+    `;
+  }
+
+  if (role === "Customer") {
+    roleButtons = `
+      <button>My Orders</button>
+      <button>Raise Service</button>
+      <button onclick="setScreen('warranty')">Warranty</button>
+    `;
+  }
+
+  if (role === "Dealer") {
+    roleButtons = `
+      <button>My Orders</button>
+      <button>Service Requests</button>
+    `;
+  }
+
+  if (role === "Management") {
+    roleButtons = `
+      <button>View Analytics</button>
+      <button>Manage Team</button>
+      <button>Accounts</button>
+    `;
+  }
+
+  let content = "";
+
+  if (screen === "execution") {
+    content = `
+      <h3>Accepted Projects</h3>
+      <div style="background:#fff;padding:10px;border-radius:10px;margin:10px 0;">
+        <p>Customer: Ramesh</p>
+        <p>Phone: 9876543210</p>
+        <p>Location: Hyderabad</p>
+        <p>Model: Aqua Crown</p>
+        <p>Time: 5 Days</p>
+      </div>
+    `;
+  }
+
+  if (screen === "warranty") {
+    content = `
+      <h3>Warranty Status</h3>
+      <p>🔒 Locked (Complete payment to activate)</p>
+    `;
+  }
+
+  app.innerHTML = `
+    <div style="padding:20px;background:#e0f2fe;min-height:100vh;">
+      
+      <div style="background:#0ea5e9;color:white;padding:10px;border-radius:10px;">
+        ${role} PANEL
+      </div>
+
+      <div style="margin-top:10px;">
+        <button onclick="setScreen('dashboard')">Dashboard</button>
+        <button>Catalogue</button>
+        <button>Service</button>
+        <button>Notifications</button>
+        <button>Profile</button>
+      </div>
+
+      <div style="margin-top:20px;display:flex;flex-direction:column;gap:10px;">
+        ${screen === "dashboard" ? roleButtons : ""}
+        ${content}
+      </div>
+
+      <button onclick="logout()" style="margin-top:20px;background:red;color:white;">Logout</button>
+    </div>
+  `;
+}
+
+function selectRole(r) {
+  role = r;
+  screen = "dashboard";
+  render();
+}
+
+function setScreen(s) {
+  screen = s;
+  render();
+}
+
+function logout() {
+  role = null;
+  render();
+}
+
+render();
+</script>
+
+</body>
+</html>
